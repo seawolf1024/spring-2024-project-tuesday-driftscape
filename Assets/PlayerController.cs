@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
     public RectTransform hintransform;
     private Vector2 hintstartPosition;
     public bool isHint = false;
+    public RectTransform hintgtransform;
+    private Vector2 hintgstartPosition;
+    public bool isHintg = false;
 
 
     private bool isGrounded; // 是否接触地面
@@ -58,13 +61,12 @@ public class PlayerController : MonoBehaviour
     public bool isCooldown = false; // 陷阱是否处于冷却状态
     public float cooldownTime = 0.6f; // 陷阱的冷却时间
 
-
     private bool isPaused = false; 
     public GameObject pauseMenuUI;
 
     void Start()
     {
-        rb2d = GetComponent<Rigidbody2D>();
+        rb2d = GetComponent<Rigidbody2D>();     
         spriteRenderer = GetComponent<SpriteRenderer>(); // 获取SpriteRenderer组件
         originalColor = spriteRenderer.color; // 保存原始颜色
         success.SetActive(false);
@@ -72,6 +74,8 @@ public class PlayerController : MonoBehaviour
         nextlevel.SetActive(false);
         pauseMenuUI.SetActive(false);
         hintstartPosition = hintransform.anchoredPosition;
+        hintgstartPosition = hintgtransform.anchoredPosition;
+
 
     }
 
@@ -93,14 +97,13 @@ public class PlayerController : MonoBehaviour
         {
             TogglePause();
         }
-        if(isHint){
-            hintransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
-            if (hintransform.anchoredPosition.x > Screen.width + hintransform.rect.width)
+        if(isHintg){
+            hintgtransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
+            if (hintgtransform.anchoredPosition.x > Screen.width + hintgtransform.rect.width)
             {
-                isHint = false;
+                isHintg = false;
             }
         }
-
         if (canMoveFreely)
         {
             // 失去重力时的自由移动
@@ -172,6 +175,7 @@ public class PlayerController : MonoBehaviour
             if (Vector2.Distance(gravityTool.position, transform.position) < 0.5f)
             {
                 possession += 1;
+                isHintg = true;
                 gtool.SetActive(false);
 
             }
@@ -271,7 +275,6 @@ public class PlayerController : MonoBehaviour
             success.SetActive(true); 
             nextlevel.SetActive(true); 
         }
-
         if (other.gameObject.tag == "SpringBed") // Do not jump when player using spring bed tool
         {
             isJump = false;
@@ -301,19 +304,25 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Tool"))
         {
+            /*isHint = true;
+            if (isHint)
+            {
+                hintransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
+                if (hintransform.anchoredPosition.x > Screen.width + hintransform.rect.width)
+                {
+                    isHint = false;
+                }
+            }*/
             StartCoroutine(TemporaryLoseGravity(FreeFlytime));
         }
     }
     IEnumerator TemporaryLoseGravity(float duration)
     {
-
         rb2d.gravityScale = 0; // 玩家失去重力
         canMoveFreely = true; // 允许玩家自由移动
-        isHint = true;
         yield return new WaitForSeconds(duration); // 等待指定时间
         rb2d.gravityScale = 1; // 恢复重力
         canMoveFreely = false; // 恢复正常移动限制
-
     }
     IEnumerator Immobilize(float time, GameObject other)
     {
