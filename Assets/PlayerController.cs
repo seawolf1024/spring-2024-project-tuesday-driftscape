@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
     public RectTransform hintransform;
     private Vector2 hintstartPosition;
     public bool isHint = false;
+    public RectTransform hintgtransform;
+    private Vector2 hintgstartPosition;
+    public bool isHintg = false;
 
 
     private bool isGrounded; // 是否接触地面
@@ -55,8 +58,13 @@ public class PlayerController : MonoBehaviour
     public GameObject fgoal;
     public bool haveftool = false;
 
+<<<<<<< HEAD
     public bool isCooldown = false; // 陷阱是否处于冷却状态
     public float cooldownTime = 0.6f; // 陷阱的冷却时间
+=======
+    public bool isCooldown = false; // 
+    public float cooldownTime = 0.6f; // 
+>>>>>>> 3be351ddadb185a352c680db7546f4e0d0d5f74c
 
 
     private bool isPaused = false; 
@@ -65,13 +73,21 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+<<<<<<< HEAD
         spriteRenderer = GetComponent<SpriteRenderer>(); // 获取SpriteRenderer组件
         originalColor = spriteRenderer.color; // 保存原始颜色
+=======
+        spriteRenderer = GetComponent<SpriteRenderer>(); // 
+        originalColor = spriteRenderer.color; // 
+
+>>>>>>> 3be351ddadb185a352c680db7546f4e0d0d5f74c
         success.SetActive(false);
         restart.SetActive(false);
         nextlevel.SetActive(false);
         pauseMenuUI.SetActive(false);
         hintstartPosition = hintransform.anchoredPosition;
+        hintgstartPosition = hintgtransform.anchoredPosition;
+
 
     }
 
@@ -93,6 +109,23 @@ public class PlayerController : MonoBehaviour
         {
             TogglePause();
         }
+<<<<<<< HEAD
+=======
+        if(isHint){
+            hintransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
+            if (hintransform.anchoredPosition.x > Screen.width + hintransform.rect.width)
+            {
+                isHint = false;
+            }
+        }
+        if(isHintg){
+            hintgtransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
+            if (hintgtransform.anchoredPosition.x > Screen.width + hintgtransform.rect.width)
+            {
+                isHintg = false;
+            }
+        }
+>>>>>>> 3be351ddadb185a352c680db7546f4e0d0d5f74c
         if (canMoveFreely)
         {
             // 失去重力时的自由移动
@@ -164,6 +197,7 @@ public class PlayerController : MonoBehaviour
             if (Vector2.Distance(gravityTool.position, transform.position) < 0.5f)
             {
                 possession += 1;
+                isHintg = true;
                 gtool.SetActive(false);
 
             }
