@@ -10,6 +10,13 @@ public class PlayerController : MonoBehaviour
     public KeyCode jumpKey = KeyCode.Space; // 跳跃按键，默认为空格键
     private Rigidbody2D rb2d;
 
+
+    public float textspeed = 0.2f;
+    public RectTransform hintransform;
+    private Vector2 hintstartPosition;
+    public bool isHint = false;
+
+
     private bool isGrounded; // 是否接触地面
     public float immobilizeTime; // 球体不能移动的时间
     private SpriteRenderer spriteRenderer;
@@ -51,6 +58,10 @@ public class PlayerController : MonoBehaviour
     public bool isCooldown = false; // 陷阱是否处于冷却状态
     public float cooldownTime = 0.6f; // 陷阱的冷却时间
 
+
+    private bool isPaused = false; 
+    public GameObject pauseMenuUI;
+
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -59,6 +70,9 @@ public class PlayerController : MonoBehaviour
         success.SetActive(false);
         restart.SetActive(false);
         nextlevel.SetActive(false);
+        pauseMenuUI.SetActive(false);
+        hintstartPosition = hintransform.anchoredPosition;
+
     }
 
     void UpdateDirectionIndicator()
@@ -75,6 +89,18 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         // 自由移动时，允许上下移动
         float moveVertical = canMoveFreely ? Input.GetAxis("Vertical") : 0;
+        if (Input.GetMouseButtonDown(1)) // 鼠标右键的索引是1
+        {
+            TogglePause();
+        }
+        if(isHint){
+            hintransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
+            if (hintransform.anchoredPosition.x > Screen.width + hintransform.rect.width)
+            {
+                isHint = false;
+            }
+        }
+
         if (canMoveFreely)
         {
             // 失去重力时的自由移动
@@ -257,6 +283,7 @@ public class PlayerController : MonoBehaviour
     {
         rb2d.gravityScale = 0; // 玩家失去重力
         canMoveFreely = true; // 允许玩家自由移动
+        isHint = true;
         yield return new WaitForSeconds(duration); // 等待指定时间
         rb2d.gravityScale = 1; // 恢复重力
         canMoveFreely = false; // 恢复正常移动限制
@@ -294,5 +321,20 @@ public class PlayerController : MonoBehaviour
         Vector2 originalGravity = Physics2D.gravity;
         Physics2D.gravity = new Vector2(0, -9.81f);
     }
-    
+    void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        Time.timeScale = isPaused ? 0 : 1;
+
+        if (isPaused)
+        {
+            pauseMenuUI.SetActive(true);
+        }
+        else
+        {
+            pauseMenuUI.SetActive(false);
+        }
+    }
+
 }
