@@ -1324,13 +1324,12 @@ MonoBehaviour:
   success: {fileID: 282792643}
   restart: {fileID: 854578545}
   nextlevel: {fileID: 1990891679}
-  nextsceneName: 
+  nextsceneName: Home
   directionIndicator: {fileID: 1503751780}
-  launchForce: 1000
   CannonPlace: {fileID: 1726051702}
   launchDirection: {x: 1, y: 0}
-  forceMagnitude: 800
-  launch: 0
+  rotationSpeed: 20
+  initialSpeed: 15
   gravityTool: {fileID: 327092492}
   possession: 0
   gtool: {fileID: 327092491}
@@ -5226,14 +5225,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Purple capsule: "1/3" and "Enter"
+  m_text: 'Purple capsule: "Enter"
 
     Blue polygon: "F"
 
-    White hexagon:
-    "G"
+    White hexagon: "G"
 
-    Triangle: "WASD"'
+    Triangle:
+    "WASD"'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
