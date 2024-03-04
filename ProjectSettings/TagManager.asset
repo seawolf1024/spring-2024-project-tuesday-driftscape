@@ -9,6 +9,7 @@ TagManager:
   - Goal
   - Obstacle
   - Tool
+  - SpringBed
   layers:
   - Default
   - TransparentFX
