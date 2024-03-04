@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; // 锟斤拷锟斤拷锟斤拷锟斤拷锟秸硷拷锟皆凤拷锟绞筹拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷
+using UnityEngine.SceneManagement; // 引入命名空间以访问场景管理功能
 
 public class PlayerController : MonoBehaviour
 {
-    public float jumpForce; // 锟斤拷跃锟斤拷锟斤拷
-    public float speed; // 锟斤拷锟狡斤拷色锟狡讹拷锟劫讹拷
-    public KeyCode jumpKey = KeyCode.Space; // 锟斤拷跃锟斤拷锟斤拷锟斤拷默锟斤拷为锟秸革拷锟�
+    public float jumpForce; // 跳跃力度
+    public float speed; // 控制角色移动速度
+    public KeyCode jumpKey = KeyCode.Space; // 跳跃按键，默认为空格键
     private Rigidbody2D rb2d;
-
-
 
     public float textspeed = 0.2f;
     public RectTransform hintransform;
@@ -29,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform enemy;
 
-    private bool canMoveFreely = false; // 锟斤拷锟斤拷锟斤拷锟斤拷锟狡讹拷锟侥诧拷锟斤拷锟斤拷锟斤拷
+    private bool canMoveFreely = false; // 控制自由移动的布尔变量
     public float FreeFlytime;
     public GameObject success;
     public GameObject restart;
@@ -38,13 +36,13 @@ public class PlayerController : MonoBehaviour
 
     // Cannon launch direction indicator
     public LineRenderer directionIndicator;
-    public float launchForce;  // 锟斤拷锟狡凤拷锟斤拷锟劫度的诧拷锟斤拷
-
     public Transform CannonPlace;
-    
     public Vector2 launchDirection = Vector2.right;
-    public float forceMagnitude = 1000f;
-    public bool launch = false;
+    public float rotationSpeed = 20f;
+    public float initialSpeed = 15.0f; // 初始速度
+    private bool isRotatingClockwise = false; // 初始逆时针旋转
+    private float currentAngleDegrees = 0f; // 初始角度
+    private bool canMove = true;
 
     // gravity tool
     public Transform gravityTool;
@@ -57,8 +55,8 @@ public class PlayerController : MonoBehaviour
     public GameObject fgoal;
     public bool haveftool = false;
 
-    public bool isCooldown = false; // 锟斤拷锟斤拷锟角凤拷锟斤拷锟斤拷却状态
-    public float cooldownTime = 0.6f; // 锟斤拷锟斤拷锟斤拷锟饺词憋拷锟�
+    public bool isCooldown = false; // 陷阱是否处于冷却状态
+    public float cooldownTime = 0.6f; // 陷阱的冷却时间
 
 
     private bool isPaused = false; 
@@ -67,8 +65,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>(); // 锟斤拷取SpriteRenderer锟斤拷锟�
-        originalColor = spriteRenderer.color; // 锟斤拷锟斤拷原始锟斤拷色
+        spriteRenderer = GetComponent<SpriteRenderer>(); // 获取SpriteRenderer组件
+        originalColor = spriteRenderer.color; // 保存原始颜色
         success.SetActive(false);
         restart.SetActive(false);
         nextlevel.SetActive(false);
@@ -89,23 +87,15 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
-        // 锟斤拷锟斤拷锟狡讹拷时锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟狡讹拷
+        // 自由移动时，允许上下移动
         float moveVertical = canMoveFreely ? Input.GetAxis("Vertical") : 0;
         if (Input.GetMouseButtonDown(1)) // 鼠标右键的索引是1
         {
             TogglePause();
         }
-        if(isHint){
-            hintransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
-            if (hintransform.anchoredPosition.x > Screen.width + hintransform.rect.width)
-            {
-                isHint = false;
-            }
-        }
-
         if (canMoveFreely)
         {
-            // 失去锟斤拷锟斤拷时锟斤拷锟斤拷锟斤拷锟狡讹拷
+            // 失去重力时的自由移动
             Vector2 movement = new Vector2(moveHorizontal, moveVertical) * speed;
             Debug.Log("movement"+rb2d.velocity);
             rb2d.velocity = movement;
@@ -119,45 +109,48 @@ public class PlayerController : MonoBehaviour
         }
         if (!isImmobilized) // 锟斤拷锟矫伙拷斜锟斤拷锟阶�
         {
-            if(!launch){
+            // 调用move函数，但仅当canMove为true时
+            if (canMove)
+            {
                 Move();
-            } 
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && isJump)
+            }
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
                 Jump();
             }
             if (Vector3.Distance(CannonPlace.position, transform.position) < 0.5f)
             {
+                if (isRotatingClockwise)
+                {
+                    currentAngleDegrees -= Time.deltaTime * rotationSpeed;
+                }
+                else
+                {
+                    currentAngleDegrees += Time.deltaTime * rotationSpeed;
+                }
+
+                if (currentAngleDegrees >= 180f)
+                {
+                    isRotatingClockwise = true; // 超过180度，改为逆时针旋转
+                    currentAngleDegrees = 180f; // 修正角度到边界
+                }
+                else if (currentAngleDegrees <= 0f)
+                {
+                    isRotatingClockwise = false; // 小于0度，改为顺时针旋转
+                    currentAngleDegrees = 0f; // 修正角度到边界
+                }
+
+                // 使用当前角度更新launchDirection
+                launchDirection = RotateVector2(Vector2.right, currentAngleDegrees);
                 UpdateDirectionIndicator();
                 directionIndicator.enabled = true;
-
-                // 锟斤拷锟斤拷锟斤拷锟戒方锟斤拷
-                if (Input.GetKeyDown(KeyCode.W))
-                {
-                    launchDirection = RotateVector2(launchDirection, 5); // 锟斤拷时锟斤拷锟斤拷转
-                    UpdateDirectionIndicator(); // 锟斤拷锟铰凤拷锟斤拷指示锟斤拷
-                }
-                else if (Input.GetKeyDown(KeyCode.S))
-                {
-                    launchDirection = RotateVector2(launchDirection, -5); // 顺时锟斤拷锟斤拷转
-                    UpdateDirectionIndicator(); // 锟斤拷锟铰凤拷锟斤拷指示锟斤拷
-                }
-                // 锟斤拷锟斤拷
+                // 发射
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
                 {
-                    // 锟斤拷取 Rigidbody2D 锟斤拷锟�
-                    if (rb2d != null)
-                    {
-                        // 应锟斤拷一锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟矫筹拷锟劫讹拷
-                        Debug.Log(launchDirection);
-                        rb2d.AddForce(new Vector2(launchDirection.x, launchDirection.y) * launchForce, ForceMode2D.Impulse);
-                        // Debug.Log(launchDirection);
-                        Debug.Log("Velocity set to: " + rb2d.velocity);
-                        launch = true;
-                        StartCoroutine(EnableGravityAfterDelay(1.5f));
-
-                    }
+                    LaunchProjectile();
+                    canMove = false; // 发射后禁止移动
                 }
+
             }
             else
             {
@@ -194,12 +187,12 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        // 锟斤拷锟斤拷锟斤拷锟斤拷锟経I锟斤拷示锟斤拷锟斤拷锟斤拷锟斤拷野锟斤拷锟斤拷锟紽锟斤拷锟斤拷锟斤拷锟斤拷锟铰硷拷锟截碉拷前锟斤拷锟斤拷
+        // 如果重启的UI显示，并且玩家按下了F键，则重新加载当前场景
         if (restart.activeSelf && Input.GetKeyDown(KeyCode.F))
         {
             ReloadCurrentScene();
         }
-        // 锟斤拷锟斤拷锟斤拷锟斤拷锟経I锟斤拷示锟斤拷锟斤拷锟斤拷锟斤拷野锟斤拷锟斤拷锟絆锟斤拷锟斤拷锟斤拷锟斤拷锟铰硷拷锟截碉拷前锟斤拷锟斤拷
+        // 如果重启的UI显示，并且玩家按下了O键，则重新加载当前场景
         if (nextlevel.activeSelf && Input.GetKeyDown(KeyCode.O))
         {
             ReloadNextScene();
@@ -207,15 +200,18 @@ public class PlayerController : MonoBehaviour
         // Check if the ESC key is pressed
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            Time.timeScale = 1; // 场景运动
             SceneManager.LoadScene("Home");
         }
     }
-    IEnumerator EnableGravityAfterDelay(float delay)
+    void LaunchProjectile()
     {
-        // 绛夊緟鎸囧畾鐨勫欢杩熸椂闂�
-        yield return new WaitForSeconds(delay);
-        // 灏唃ravityScale璁剧疆涓�1锛屼娇閲嶅姏鐢熸晥
-        launch = false;
+        // 将发射角度从度转换为弧度
+        float angleRad = Mathf.Atan2(launchDirection.y, launchDirection.x);
+        float vx = initialSpeed * Mathf.Cos(angleRad);
+        float vy = initialSpeed * Mathf.Sin(angleRad);
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        rb.velocity = new Vector2(vx, vy);
     }
     IEnumerator FakeGoal(float duration)
     {
@@ -243,10 +239,11 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         Vector2 movement = new Vector2(moveHorizontal * speed, rb2d.velocity.y);
         rb2d.velocity = movement;
-        Debug.Log("move"+rb2d.velocity);
     }
     private void OnCollisionEnter2D(Collision2D other)
     {
+        // 球体发生碰撞，允许移动，发射逻辑
+        canMove = true;
         if (other.gameObject.CompareTag("Trap") && !isCooldown) // 锟斤拷锟斤拷欠锟斤拷锟阶诧拷锟絫rap锟截帮拷
         {
             StartCoroutine(Immobilize(immobilizeTime, other.gameObject));
@@ -259,14 +256,13 @@ public class PlayerController : MonoBehaviour
             isJump = true;
 
         }
-        if (other.gameObject.CompareTag("Goal")) // 锟斤拷锟斤拷欠锟斤拷锟阶诧拷锟紾oal
+        if (other.gameObject.CompareTag("Goal")) // 检测是否碰撞到Goal
         {
-            spriteRenderer.color = Color.green; // 锟斤拷锟斤拷锟斤拷锟斤拷色锟斤拷为锟斤拷色
-            Time.timeScale = 0; // 锟斤拷止锟斤拷锟斤拷
+            spriteRenderer.color = Color.green; // 将球体颜色改为绿色
+            Time.timeScale = 0; // 静止场景
             success.SetActive(true); 
             nextlevel.SetActive(true); 
         }
-
         if (other.gameObject.tag == "SpringBed") // Do not jump when player using spring bed tool
         {
             isJump = false;
@@ -277,11 +273,11 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            isGrounded = false; // 锟诫开锟斤拷锟斤拷时锟斤拷锟铰碉拷锟斤拷状态
+            isGrounded = false; // 离开地面时更新地面状态
         }
-        if (other.gameObject.CompareTag("Goal")) // 锟斤拷锟斤拷欠锟斤拷锟阶诧拷锟紾oal
+        if (other.gameObject.CompareTag("Goal")) // 检测是否碰撞到Goal
         {
-            spriteRenderer.color = originalColor; // 锟斤拷锟斤拷锟斤拷锟斤拷色锟斤拷为原锟斤拷锟斤拷色
+            spriteRenderer.color = originalColor; // 将球体颜色改为原本颜色
         }
     }
     Vector2 RotateVector2(Vector2 v, float degrees)
@@ -296,19 +292,25 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Tool"))
         {
+            /*isHint = true;
+            if (isHint)
+            {
+                hintransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
+                if (hintransform.anchoredPosition.x > Screen.width + hintransform.rect.width)
+                {
+                    isHint = false;
+                }
+            }*/
             StartCoroutine(TemporaryLoseGravity(FreeFlytime));
         }
     }
     IEnumerator TemporaryLoseGravity(float duration)
     {
-
         rb2d.gravityScale = 0; // 玩家失去重力
         canMoveFreely = true; // 允许玩家自由移动
-        isHint = true;
         yield return new WaitForSeconds(duration); // 等待指定时间
         rb2d.gravityScale = 1; // 恢复重力
         canMoveFreely = false; // 恢复正常移动限制
-
     }
     IEnumerator Immobilize(float time, GameObject other)
     {
@@ -322,15 +324,15 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator Cooldown()
     {
-        isCooldown = true; // 锟斤拷始锟斤拷却
-        yield return new WaitForSeconds(cooldownTime); // 锟饺达拷锟斤拷却时锟斤拷
-        isCooldown = false; // 锟斤拷锟斤拷锟斤拷却
+        isCooldown = true; // 开始冷却
+        yield return new WaitForSeconds(cooldownTime); // 等待冷却时间
+        isCooldown = false; // 结束冷却
     }
     void ReloadCurrentScene()
     {
-        Time.timeScale = 1; // 锟斤拷锟斤拷锟剿讹拷
-        int sceneIndex = SceneManager.GetActiveScene().buildIndex; // 锟斤拷取锟斤拷前锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷
-        SceneManager.LoadScene(sceneIndex); // 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟铰硷拷锟截筹拷锟斤拷
+        Time.timeScale = 1; // 场景运动
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex; // 获取当前场景的索引
+        SceneManager.LoadScene(sceneIndex); // 根据索引重新加载场景
         possession = 0;
 
         Vector2 originalGravity = Physics2D.gravity;
@@ -338,8 +340,8 @@ public class PlayerController : MonoBehaviour
     }
     void ReloadNextScene()
     {
-        Time.timeScale = 1; // 锟斤拷锟斤拷锟剿讹拷
-        SceneManager.LoadScene(nextsceneName); // 锟斤拷锟斤拷指锟斤拷锟斤拷锟斤拷
+        Time.timeScale = 1; // 场景运动
+        SceneManager.LoadScene(nextsceneName); // 加载指定场景
         possession = 0;
         Vector2 originalGravity = Physics2D.gravity;
         Physics2D.gravity = new Vector2(0, -9.81f);
