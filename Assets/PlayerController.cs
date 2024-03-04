@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; // ÒıÈëÃüÃû¿Õ¼äÒÔ·ÃÎÊ³¡¾°¹ÜÀí¹¦ÄÜ
+using UnityEngine.SceneManagement; // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç§¸ç¡·æ‹·é”Ÿçš†å‡¤æ‹·é”Ÿç»ç­¹æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
 
 public class PlayerController : MonoBehaviour
 {
-    public float jumpForce; // ÌøÔ¾Á¦¶È
-    public float speed; // ¿ØÖÆ½ÇÉ«ÒÆ¶¯ËÙ¶È
-    public KeyCode jumpKey = KeyCode.Space; // ÌøÔ¾°´¼ü£¬Ä¬ÈÏÎª¿Õ¸ñ¼ü
+    public float jumpForce; // é”Ÿæ–¤æ‹·è·ƒé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
+    public float speed; // é”Ÿæ–¤æ‹·é”Ÿç‹¡æ–¤æ‹·è‰²é”Ÿç‹¡è®¹æ‹·é”ŸåŠ«è®¹æ‹·
+    public KeyCode jumpKey = KeyCode.Space; // é”Ÿæ–¤æ‹·è·ƒé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é»˜é”Ÿæ–¤æ‹·ä¸ºé”Ÿç§¸é©æ‹·é”Ÿï¿½
     private Rigidbody2D rb2d;
+
 
 
     public float textspeed = 0.2f;
@@ -17,8 +18,9 @@ public class PlayerController : MonoBehaviour
     public bool isHint = false;
 
 
-    private bool isGrounded; // ÊÇ·ñ½Ó´¥µØÃæ
-    public float immobilizeTime; // ÇòÌå²»ÄÜÒÆ¶¯µÄÊ±¼ä
+    private bool isGrounded; // æ˜¯å¦æ¥è§¦åœ°é¢
+    public float immobilizeTime; // çƒä½“ä¸èƒ½ç§»åŠ¨çš„æ—¶é—´
+
     private SpriteRenderer spriteRenderer;
     private bool isImmobilized = false;
     private bool isJump = true;
@@ -27,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform enemy;
 
-    private bool canMoveFreely = false; // ¿ØÖÆ×ÔÓÉÒÆ¶¯µÄ²¼¶û±äÁ¿
+    private bool canMoveFreely = false; // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç‹¡è®¹æ‹·é”Ÿä¾¥è¯§æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
     public float FreeFlytime;
     public GameObject success;
     public GameObject restart;
@@ -36,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
     // Cannon launch direction indicator
     public LineRenderer directionIndicator;
-    public float launchForce;  // ¿ØÖÆ·¢ÉäËÙ¶ÈµÄ²ÎÊı
+    public float launchForce;  // é”Ÿæ–¤æ‹·é”Ÿç‹¡å‡¤æ‹·é”Ÿæ–¤æ‹·é”ŸåŠ«åº¦çš„è¯§æ‹·é”Ÿæ–¤æ‹·
 
     public Transform CannonPlace;
     
@@ -55,8 +57,8 @@ public class PlayerController : MonoBehaviour
     public GameObject fgoal;
     public bool haveftool = false;
 
-    public bool isCooldown = false; // ÏİÚåÊÇ·ñ´¦ÓÚÀäÈ´×´Ì¬
-    public float cooldownTime = 0.6f; // ÏİÚåµÄÀäÈ´Ê±¼ä
+    public bool isCooldown = false; // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿè§’å‡¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å´çŠ¶æ€
+    public float cooldownTime = 0.6f; // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿé¥ºè¯æ†‹æ‹·é”Ÿï¿½
 
 
     private bool isPaused = false; 
@@ -65,8 +67,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>(); // »ñÈ¡SpriteRenderer×é¼ş
-        originalColor = spriteRenderer.color; // ±£´æÔ­Ê¼ÑÕÉ«
+        spriteRenderer = GetComponent<SpriteRenderer>(); // é”Ÿæ–¤æ‹·å–SpriteRendereré”Ÿæ–¤æ‹·é”Ÿï¿½
+        originalColor = spriteRenderer.color; // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·åŸå§‹é”Ÿæ–¤æ‹·è‰²
         success.SetActive(false);
         restart.SetActive(false);
         nextlevel.SetActive(false);
@@ -87,9 +89,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
-        // ×ÔÓÉÒÆ¶¯Ê±£¬ÔÊĞíÉÏÏÂÒÆ¶¯
+        // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç‹¡è®¹æ‹·æ—¶é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç‹¡è®¹æ‹·
         float moveVertical = canMoveFreely ? Input.GetAxis("Vertical") : 0;
-        if (Input.GetMouseButtonDown(1)) // Êó±êÓÒ¼üµÄË÷ÒıÊÇ1
+        if (Input.GetMouseButtonDown(1)) // é¼ æ ‡å³é”®çš„ç´¢å¼•æ˜¯1
         {
             TogglePause();
         }
@@ -103,8 +105,9 @@ public class PlayerController : MonoBehaviour
 
         if (canMoveFreely)
         {
-            // Ê§È¥ÖØÁ¦Ê±µÄ×ÔÓÉÒÆ¶¯
+            // å¤±å»é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ—¶é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç‹¡è®¹æ‹·
             Vector2 movement = new Vector2(moveHorizontal, moveVertical) * speed;
+            Debug.Log("movement"+rb2d.velocity);
             rb2d.velocity = movement;
         }
         if (enemy != null && !isImmobilized)
@@ -114,9 +117,11 @@ public class PlayerController : MonoBehaviour
                 isImmobilized = true;
             }
         }
-        if (!isImmobilized) // Èç¹ûÃ»ÓĞ±»¶¨×¡
+        if (!isImmobilized) // é”Ÿæ–¤æ‹·é”ŸçŸ«ä¼™æ‹·æ–œé”Ÿæ–¤æ‹·é”Ÿé˜¶ï¿½
         {
-            Move();
+            if(!launch){
+                Move();
+            } 
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded && isJump)
             {
                 Jump();
@@ -126,28 +131,32 @@ public class PlayerController : MonoBehaviour
                 UpdateDirectionIndicator();
                 directionIndicator.enabled = true;
 
-                // µ÷Õû·¢Éä·½Ïò
-                if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+                // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæˆ’æ–¹é”Ÿæ–¤æ‹·
+                if (Input.GetKeyDown(KeyCode.W))
                 {
-                    launchDirection = RotateVector2(launchDirection, 5); // ÄæÊ±ÕëĞı×ª
-                    UpdateDirectionIndicator(); // ¸üĞÂ·½ÏòÖ¸Ê¾Æ÷
+                    launchDirection = RotateVector2(launchDirection, 5); // é”Ÿæ–¤æ‹·æ—¶é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è½¬
+                    UpdateDirectionIndicator(); // é”Ÿæ–¤æ‹·é”Ÿé“°å‡¤æ‹·é”Ÿæ–¤æ‹·æŒ‡ç¤ºé”Ÿæ–¤æ‹·
                 }
-                else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+                else if (Input.GetKeyDown(KeyCode.S))
                 {
-                    launchDirection = RotateVector2(launchDirection, -5); // Ë³Ê±ÕëĞı×ª
-                    UpdateDirectionIndicator(); // ¸üĞÂ·½ÏòÖ¸Ê¾Æ÷
+                    launchDirection = RotateVector2(launchDirection, -5); // é¡ºæ—¶é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è½¬
+                    UpdateDirectionIndicator(); // é”Ÿæ–¤æ‹·é”Ÿé“°å‡¤æ‹·é”Ÿæ–¤æ‹·æŒ‡ç¤ºé”Ÿæ–¤æ‹·
                 }
-                // ·¢Éä
+                // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
                 {
-                    // »ñÈ¡ Rigidbody2D ×é¼ş
-                    Rigidbody2D rb = GetComponent<Rigidbody2D>();
-                    if (rb != null)
+                    // é”Ÿæ–¤æ‹·å– Rigidbody2D é”Ÿæ–¤æ‹·é”Ÿï¿½
+                    if (rb2d != null)
                     {
-                        // Ó¦ÓÃÒ»¸ö³åÁ¿£¬¶ø²»ÊÇÉèÖÃ³õËÙ¶È
-                        rb.AddForce(new Vector2(launchDirection.x, launchDirection.y) * launchForce, ForceMode2D.Impulse);
+                        // åº”é”Ÿæ–¤æ‹·ä¸€é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”ŸçŸ«ç­¹æ‹·é”ŸåŠ«è®¹æ‹·
+                        Debug.Log(launchDirection);
+                        rb2d.AddForce(new Vector2(launchDirection.x, launchDirection.y) * launchForce, ForceMode2D.Impulse);
+                        // Debug.Log(launchDirection);
+                        Debug.Log("Velocity set to: " + rb2d.velocity);
+                        launch = true;
+                        StartCoroutine(EnableGravityAfterDelay(1.5f));
+
                     }
-                    launch = true;
                 }
             }
             else
@@ -185,12 +194,12 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        // Èç¹ûÖØÆôµÄUIÏÔÊ¾£¬²¢ÇÒÍæ¼Ò°´ÏÂÁËF¼ü£¬ÔòÖØĞÂ¼ÓÔØµ±Ç°³¡¾°
+        // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”ŸçµŒIé”Ÿæ–¤æ‹·ç¤ºé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é‡é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿç´½é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿé“°ç¡·æ‹·é”Ÿæˆªç¢‰æ‹·å‰é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
         if (restart.activeSelf && Input.GetKeyDown(KeyCode.F))
         {
             ReloadCurrentScene();
         }
-        // Èç¹ûÖØÆôµÄUIÏÔÊ¾£¬²¢ÇÒÍæ¼Ò°´ÏÂÁËO¼ü£¬ÔòÖØĞÂ¼ÓÔØµ±Ç°³¡¾°
+        // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”ŸçµŒIé”Ÿæ–¤æ‹·ç¤ºé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é‡é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿçµ†é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿé“°ç¡·æ‹·é”Ÿæˆªç¢‰æ‹·å‰é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
         if (nextlevel.activeSelf && Input.GetKeyDown(KeyCode.O))
         {
             ReloadNextScene();
@@ -200,6 +209,13 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene("Home");
         }
+    }
+    IEnumerator EnableGravityAfterDelay(float delay)
+    {
+        // ç»›å¤Šç·Ÿé¸å›§ç•¾é¨å‹«æ¬¢æ©ç†¸æ¤‚é—‚ï¿½
+        yield return new WaitForSeconds(delay);
+        // çå”ƒravityScaleç’å‰§ç–†æ¶“ï¿½1é”›å±¼å¨‡é–²å¶…å§é¢ç†¸æ™¥
+        launch = false;
     }
     IEnumerator FakeGoal(float duration)
     {
@@ -218,6 +234,7 @@ public class PlayerController : MonoBehaviour
     {
         isJump = true;
         Vector2 v = new Vector2(Physics2D.gravity.x, -Physics2D.gravity.y/9.8f);
+        //Vector2 v = new Vector2(5, 10);
         rb2d.AddForce(v * jumpForce, ForceMode2D.Impulse);
 
     }
@@ -226,23 +243,26 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         Vector2 movement = new Vector2(moveHorizontal * speed, rb2d.velocity.y);
         rb2d.velocity = movement;
+        Debug.Log("move"+rb2d.velocity);
     }
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Trap") && !isCooldown) // ¼ì²âÊÇ·ñÅö×²µ½trapµØ°å
+        if (other.gameObject.CompareTag("Trap") && !isCooldown) // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¬ é”Ÿæ–¤æ‹·é”Ÿé˜¶è¯§æ‹·é”Ÿçµ«rapé”Ÿæˆªå¸®æ‹·
         {
             StartCoroutine(Immobilize(immobilizeTime, other.gameObject));
             StartCoroutine(Cooldown());
         }
         if (other.gameObject.CompareTag("Ground"))
         {
-            isGrounded = true; // ½Ó´¥µØÃæÊ±¸üĞÂµØÃæ×´Ì¬
+
+            isGrounded = true; // æ¥è§¦åœ°é¢æ—¶æ›´æ–°åœ°é¢çŠ¶æ€
             isJump = true;
+
         }
-        if (other.gameObject.CompareTag("Goal")) // ¼ì²âÊÇ·ñÅö×²µ½Goal
+        if (other.gameObject.CompareTag("Goal")) // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¬ é”Ÿæ–¤æ‹·é”Ÿé˜¶è¯§æ‹·é”Ÿç´¾oal
         {
-            spriteRenderer.color = Color.green; // ½«ÇòÌåÑÕÉ«¸ÄÎªÂÌÉ«
-            Time.timeScale = 0; // ¾²Ö¹³¡¾°
+            spriteRenderer.color = Color.green; // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è‰²é”Ÿæ–¤æ‹·ä¸ºé”Ÿæ–¤æ‹·è‰²
+            Time.timeScale = 0; // é”Ÿæ–¤æ‹·æ­¢é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
             success.SetActive(true); 
             nextlevel.SetActive(true); 
         }
@@ -257,11 +277,11 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            isGrounded = false; // Àë¿ªµØÃæÊ±¸üĞÂµØÃæ×´Ì¬
+            isGrounded = false; // é”Ÿè¯«å¼€é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ—¶é”Ÿæ–¤æ‹·é”Ÿé“°ç¢‰æ‹·é”Ÿæ–¤æ‹·çŠ¶æ€
         }
-        if (other.gameObject.CompareTag("Goal")) // ¼ì²âÊÇ·ñÅö×²µ½Goal
+        if (other.gameObject.CompareTag("Goal")) // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æ¬ é”Ÿæ–¤æ‹·é”Ÿé˜¶è¯§æ‹·é”Ÿç´¾oal
         {
-            spriteRenderer.color = originalColor; // ½«ÇòÌåÑÕÉ«¸ÄÎªÔ­±¾ÑÕÉ«
+            spriteRenderer.color = originalColor; // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è‰²é”Ÿæ–¤æ‹·ä¸ºåŸé”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·è‰²
         }
     }
     Vector2 RotateVector2(Vector2 v, float degrees)
@@ -281,17 +301,20 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator TemporaryLoseGravity(float duration)
     {
-        rb2d.gravityScale = 0; // Íæ¼ÒÊ§È¥ÖØÁ¦
-        canMoveFreely = true; // ÔÊĞíÍæ¼Ò×ÔÓÉÒÆ¶¯
+
+        rb2d.gravityScale = 0; // ç©å®¶å¤±å»é‡åŠ›
+        canMoveFreely = true; // å…è®¸ç©å®¶è‡ªç”±ç§»åŠ¨
         isHint = true;
-        yield return new WaitForSeconds(duration); // µÈ´ıÖ¸¶¨Ê±¼ä
-        rb2d.gravityScale = 1; // »Ö¸´ÖØÁ¦
-        canMoveFreely = false; // »Ö¸´Õı³£ÒÆ¶¯ÏŞÖÆ
+        yield return new WaitForSeconds(duration); // ç­‰å¾…æŒ‡å®šæ—¶é—´
+        rb2d.gravityScale = 1; // æ¢å¤é‡åŠ›
+        canMoveFreely = false; // æ¢å¤æ­£å¸¸ç§»åŠ¨é™åˆ¶
+
     }
     IEnumerator Immobilize(float time, GameObject other)
     {
         isImmobilized = true;
         rb2d.velocity = Vector2.zero;
+         Debug.Log("Immobilize"+rb2d.velocity);
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(time);
         isImmobilized = false;
@@ -299,15 +322,15 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator Cooldown()
     {
-        isCooldown = true; // ¿ªÊ¼ÀäÈ´
-        yield return new WaitForSeconds(cooldownTime); // µÈ´ıÀäÈ´Ê±¼ä
-        isCooldown = false; // ½áÊøÀäÈ´
+        isCooldown = true; // é”Ÿæ–¤æ‹·å§‹é”Ÿæ–¤æ‹·å´
+        yield return new WaitForSeconds(cooldownTime); // é”Ÿé¥ºè¾¾æ‹·é”Ÿæ–¤æ‹·å´æ—¶é”Ÿæ–¤æ‹·
+        isCooldown = false; // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·å´
     }
     void ReloadCurrentScene()
     {
-        Time.timeScale = 1; // ³¡¾°ÔË¶¯
-        int sceneIndex = SceneManager.GetActiveScene().buildIndex; // »ñÈ¡µ±Ç°³¡¾°µÄË÷Òı
-        SceneManager.LoadScene(sceneIndex); // ¸ù¾İË÷ÒıÖØĞÂ¼ÓÔØ³¡¾°
+        Time.timeScale = 1; // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿå‰¿è®¹æ‹·
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex; // é”Ÿæ–¤æ‹·å–é”Ÿæ–¤æ‹·å‰é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
+        SceneManager.LoadScene(sceneIndex); // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿé“°ç¡·æ‹·é”Ÿæˆªç­¹æ‹·é”Ÿæ–¤æ‹·
         possession = 0;
 
         Vector2 originalGravity = Physics2D.gravity;
@@ -315,8 +338,8 @@ public class PlayerController : MonoBehaviour
     }
     void ReloadNextScene()
     {
-        Time.timeScale = 1; // ³¡¾°ÔË¶¯
-        SceneManager.LoadScene(nextsceneName); // ¼ÓÔØÖ¸¶¨³¡¾°
+        Time.timeScale = 1; // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿå‰¿è®¹æ‹·
+        SceneManager.LoadScene(nextsceneName); // é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·æŒ‡é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·é”Ÿæ–¤æ‹·
         possession = 0;
         Vector2 originalGravity = Physics2D.gravity;
         Physics2D.gravity = new Vector2(0, -9.81f);
