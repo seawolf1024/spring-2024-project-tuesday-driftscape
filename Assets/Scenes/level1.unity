@@ -3303,6 +3303,8 @@ MonoBehaviour:
   textspeed: 0.2
   hintransform: {fileID: 1093893864}
   isHint: 0
+  hintgtransform: {fileID: 0}
+  isHintg: 0
   immobilizeTime: 2
   enemy: {fileID: 511942429}
   FreeFlytime: 1.5
