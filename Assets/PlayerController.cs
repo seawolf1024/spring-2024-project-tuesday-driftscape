@@ -58,29 +58,17 @@ public class PlayerController : MonoBehaviour
     public GameObject fgoal;
     public bool haveftool = false;
 
-<<<<<<< HEAD
     public bool isCooldown = false; // 陷阱是否处于冷却状态
     public float cooldownTime = 0.6f; // 陷阱的冷却时间
-=======
-    public bool isCooldown = false; // 
-    public float cooldownTime = 0.6f; // 
->>>>>>> 3be351ddadb185a352c680db7546f4e0d0d5f74c
-
 
     private bool isPaused = false; 
     public GameObject pauseMenuUI;
 
     void Start()
     {
-        rb2d = GetComponent<Rigidbody2D>();
-<<<<<<< HEAD
+        rb2d = GetComponent<Rigidbody2D>();     
         spriteRenderer = GetComponent<SpriteRenderer>(); // 获取SpriteRenderer组件
         originalColor = spriteRenderer.color; // 保存原始颜色
-=======
-        spriteRenderer = GetComponent<SpriteRenderer>(); // 
-        originalColor = spriteRenderer.color; // 
-
->>>>>>> 3be351ddadb185a352c680db7546f4e0d0d5f74c
         success.SetActive(false);
         restart.SetActive(false);
         nextlevel.SetActive(false);
@@ -109,15 +97,6 @@ public class PlayerController : MonoBehaviour
         {
             TogglePause();
         }
-<<<<<<< HEAD
-=======
-        if(isHint){
-            hintransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
-            if (hintransform.anchoredPosition.x > Screen.width + hintransform.rect.width)
-            {
-                isHint = false;
-            }
-        }
         if(isHintg){
             hintgtransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
             if (hintgtransform.anchoredPosition.x > Screen.width + hintgtransform.rect.width)
@@ -125,7 +104,6 @@ public class PlayerController : MonoBehaviour
                 isHintg = false;
             }
         }
->>>>>>> 3be351ddadb185a352c680db7546f4e0d0d5f74c
         if (canMoveFreely)
         {
             // 失去重力时的自由移动
