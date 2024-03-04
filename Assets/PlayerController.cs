@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; // ÒıÈëÃüÃû¿Õ¼äÒÔ·ÃÎÊ³¡¾°¹ÜÀí¹¦ÄÜ
+using UnityEngine.SceneManagement; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½Ô·ï¿½ï¿½Ê³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 public class PlayerController : MonoBehaviour
 {
-    public float jumpForce; // ÌøÔ¾Á¦¶È
-    public float speed; // ¿ØÖÆ½ÇÉ«ÒÆ¶¯ËÙ¶È
-    public KeyCode jumpKey = KeyCode.Space; // ÌøÔ¾°´¼ü£¬Ä¬ÈÏÎª¿Õ¸ñ¼ü
+    public float jumpForce; // ï¿½ï¿½Ô¾ï¿½ï¿½ï¿½ï¿½
+    public float speed; // ï¿½ï¿½ï¿½Æ½ï¿½É«ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
+    public KeyCode jumpKey = KeyCode.Space; // ï¿½ï¿½Ô¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Îªï¿½Õ¸ï¿½ï¿½
     private Rigidbody2D rb2d;
 
-    private bool isGrounded; // ÊÇ·ñ½Ó´¥µØÃæ
-    public float immobilizeTime; // ÇòÌå²»ÄÜÒÆ¶¯µÄÊ±¼ä
+    private bool isGrounded; // ï¿½Ç·ï¿½Ó´ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float immobilizeTime; // ï¿½ï¿½ï¿½å²»ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
     private SpriteRenderer spriteRenderer;
     private bool isImmobilized = false;
 
@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform enemy;
 
-    private bool canMoveFreely = false; // ¿ØÖÆ×ÔÓÉÒÆ¶¯µÄ²¼¶û±äÁ¿
+    private bool canMoveFreely = false; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public float FreeFlytime;
     public GameObject success;
     public GameObject restart;
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
     // Cannon launch direction indicator
     public LineRenderer directionIndicator;
-    public float launchForce;  // ¿ØÖÆ·¢ÉäËÙ¶ÈµÄ²ÎÊı
+    public float launchForce;  // ï¿½ï¿½ï¿½Æ·ï¿½ï¿½ï¿½ï¿½Ù¶ÈµÄ²ï¿½ï¿½ï¿½
 
     public Transform CannonPlace;
     
@@ -47,14 +47,14 @@ public class PlayerController : MonoBehaviour
     public GameObject fgoal;
     public bool haveftool = false;
 
-    public bool isCooldown = false; // ÏİÚåÊÇ·ñ´¦ÓÚÀäÈ´×´Ì¬
-    public float cooldownTime = 0.6f; // ÏİÚåµÄÀäÈ´Ê±¼ä
+    public bool isCooldown = false; // ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½È´×´Ì¬
+    public float cooldownTime = 0.6f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´Ê±ï¿½ï¿½
 
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>(); // »ñÈ¡SpriteRenderer×é¼ş
-        originalColor = spriteRenderer.color; // ±£´æÔ­Ê¼ÑÕÉ«
+        spriteRenderer = GetComponent<SpriteRenderer>(); // ï¿½ï¿½È¡SpriteRendererï¿½ï¿½ï¿½
+        originalColor = spriteRenderer.color; // ï¿½ï¿½ï¿½ï¿½Ô­Ê¼ï¿½ï¿½É«
         success.SetActive(false);
         restart.SetActive(false);
         nextlevel.SetActive(false);
@@ -72,12 +72,13 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
-        // ×ÔÓÉÒÆ¶¯Ê±£¬ÔÊĞíÉÏÏÂÒÆ¶¯
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
         float moveVertical = canMoveFreely ? Input.GetAxis("Vertical") : 0;
         if (canMoveFreely)
         {
-            // Ê§È¥ÖØÁ¦Ê±µÄ×ÔÓÉÒÆ¶¯
+            // Ê§È¥ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
             Vector2 movement = new Vector2(moveHorizontal, moveVertical) * speed;
+            Debug.Log("movement"+rb2d.velocity);
             rb2d.velocity = movement;
         }
         if (enemy != null && !isImmobilized)
@@ -87,9 +88,11 @@ public class PlayerController : MonoBehaviour
                 isImmobilized = true;
             }
         }
-        if (!isImmobilized) // Èç¹ûÃ»ÓĞ±»¶¨×¡
+        if (!isImmobilized) // ï¿½ï¿½ï¿½Ã»ï¿½Ğ±ï¿½ï¿½ï¿½×¡
         {
-            Move();
+            if(!launch){
+                Move();
+            } 
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
                 Jump();
@@ -99,28 +102,32 @@ public class PlayerController : MonoBehaviour
                 UpdateDirectionIndicator();
                 directionIndicator.enabled = true;
 
-                // µ÷Õû·¢Éä·½Ïò
-                if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä·½ï¿½ï¿½
+                if (Input.GetKeyDown(KeyCode.W))
                 {
-                    launchDirection = RotateVector2(launchDirection, 5); // ÄæÊ±ÕëĞı×ª
-                    UpdateDirectionIndicator(); // ¸üĞÂ·½ÏòÖ¸Ê¾Æ÷
+                    launchDirection = RotateVector2(launchDirection, 5); // ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½×ª
+                    UpdateDirectionIndicator(); // ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½Ö¸Ê¾ï¿½ï¿½
                 }
-                else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+                else if (Input.GetKeyDown(KeyCode.S))
                 {
-                    launchDirection = RotateVector2(launchDirection, -5); // Ë³Ê±ÕëĞı×ª
-                    UpdateDirectionIndicator(); // ¸üĞÂ·½ÏòÖ¸Ê¾Æ÷
+                    launchDirection = RotateVector2(launchDirection, -5); // Ë³Ê±ï¿½ï¿½ï¿½ï¿½×ª
+                    UpdateDirectionIndicator(); // ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½Ö¸Ê¾ï¿½ï¿½
                 }
-                // ·¢Éä
+                // ï¿½ï¿½ï¿½ï¿½
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
                 {
-                    // »ñÈ¡ Rigidbody2D ×é¼ş
-                    Rigidbody2D rb = GetComponent<Rigidbody2D>();
-                    if (rb != null)
+                    // ï¿½ï¿½È¡ Rigidbody2D ï¿½ï¿½ï¿½
+                    if (rb2d != null)
                     {
-                        // Ó¦ÓÃÒ»¸ö³åÁ¿£¬¶ø²»ÊÇÉèÖÃ³õËÙ¶È
-                        rb.AddForce(new Vector2(launchDirection.x, launchDirection.y) * launchForce, ForceMode2D.Impulse);
+                        // Ó¦ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½Ù¶ï¿½
+                        Debug.Log(launchDirection);
+                        rb2d.AddForce(new Vector2(launchDirection.x, launchDirection.y) * launchForce, ForceMode2D.Impulse);
+                        // Debug.Log(launchDirection);
+                        Debug.Log("Velocity set to: " + rb2d.velocity);
+                        launch = true;
+                        StartCoroutine(EnableGravityAfterDelay(1.5f));
+
                     }
-                    launch = true;
                 }
             }
             else
@@ -158,12 +165,12 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        // Èç¹ûÖØÆôµÄUIÏÔÊ¾£¬²¢ÇÒÍæ¼Ò°´ÏÂÁËF¼ü£¬ÔòÖØĞÂ¼ÓÔØµ±Ç°³¡¾°
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½UIï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò°ï¿½ï¿½ï¿½ï¿½ï¿½Fï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Øµï¿½Ç°ï¿½ï¿½ï¿½ï¿½
         if (restart.activeSelf && Input.GetKeyDown(KeyCode.F))
         {
             ReloadCurrentScene();
         }
-        // Èç¹ûÖØÆôµÄUIÏÔÊ¾£¬²¢ÇÒÍæ¼Ò°´ÏÂÁËO¼ü£¬ÔòÖØĞÂ¼ÓÔØµ±Ç°³¡¾°
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½UIï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò°ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Øµï¿½Ç°ï¿½ï¿½ï¿½ï¿½
         if (nextlevel.activeSelf && Input.GetKeyDown(KeyCode.O))
         {
             ReloadNextScene();
@@ -173,6 +180,13 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene("Home");
         }
+    }
+    IEnumerator EnableGravityAfterDelay(float delay)
+    {
+        // ç­‰å¾…æŒ‡å®šçš„å»¶è¿Ÿæ—¶é—´
+        yield return new WaitForSeconds(delay);
+        // å°†gravityScaleè®¾ç½®ä¸º1ï¼Œä½¿é‡åŠ›ç”Ÿæ•ˆ
+        launch = false;
     }
     IEnumerator FakeGoal(float duration)
     {
@@ -190,6 +204,7 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         Vector2 v = new Vector2(Physics2D.gravity.x, -Physics2D.gravity.y/9.8f);
+        //Vector2 v = new Vector2(5, 10);
         rb2d.AddForce(v * jumpForce, ForceMode2D.Impulse);
     }
     void Move()
@@ -197,22 +212,23 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         Vector2 movement = new Vector2(moveHorizontal * speed, rb2d.velocity.y);
         rb2d.velocity = movement;
+        Debug.Log("move"+rb2d.velocity);
     }
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Trap") && !isCooldown) // ¼ì²âÊÇ·ñÅö×²µ½trapµØ°å
+        if (other.gameObject.CompareTag("Trap") && !isCooldown) // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½×²ï¿½ï¿½trapï¿½Ø°ï¿½
         {
             StartCoroutine(Immobilize(immobilizeTime, other.gameObject));
             StartCoroutine(Cooldown());
         }
         if (other.gameObject.CompareTag("Ground"))
         {
-            isGrounded = true; // ½Ó´¥µØÃæÊ±¸üĞÂµØÃæ×´Ì¬
+            isGrounded = true; // ï¿½Ó´ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½×´Ì¬
         }
-        if (other.gameObject.CompareTag("Goal")) // ¼ì²âÊÇ·ñÅö×²µ½Goal
+        if (other.gameObject.CompareTag("Goal")) // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½×²ï¿½ï¿½Goal
         {
-            spriteRenderer.color = Color.green; // ½«ÇòÌåÑÕÉ«¸ÄÎªÂÌÉ«
-            Time.timeScale = 0; // ¾²Ö¹³¡¾°
+            spriteRenderer.color = Color.green; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½Îªï¿½ï¿½É«
+            Time.timeScale = 0; // ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
             success.SetActive(true); 
             nextlevel.SetActive(true); 
         }
@@ -222,11 +238,11 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            isGrounded = false; // Àë¿ªµØÃæÊ±¸üĞÂµØÃæ×´Ì¬
+            isGrounded = false; // ï¿½ë¿ªï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½×´Ì¬
         }
-        if (other.gameObject.CompareTag("Goal")) // ¼ì²âÊÇ·ñÅö×²µ½Goal
+        if (other.gameObject.CompareTag("Goal")) // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½×²ï¿½ï¿½Goal
         {
-            spriteRenderer.color = originalColor; // ½«ÇòÌåÑÕÉ«¸ÄÎªÔ­±¾ÑÕÉ«
+            spriteRenderer.color = originalColor; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ÎªÔ­ï¿½ï¿½ï¿½ï¿½É«
         }
     }
     Vector2 RotateVector2(Vector2 v, float degrees)
@@ -246,16 +262,17 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator TemporaryLoseGravity(float duration)
     {
-        rb2d.gravityScale = 0; // Íæ¼ÒÊ§È¥ÖØÁ¦
-        canMoveFreely = true; // ÔÊĞíÍæ¼Ò×ÔÓÉÒÆ¶¯
-        yield return new WaitForSeconds(duration); // µÈ´ıÖ¸¶¨Ê±¼ä
-        rb2d.gravityScale = 1; // »Ö¸´ÖØÁ¦
-        canMoveFreely = false; // »Ö¸´Õı³£ÒÆ¶¯ÏŞÖÆ
+        rb2d.gravityScale = 0; // ï¿½ï¿½ï¿½Ê§È¥ï¿½ï¿½ï¿½ï¿½
+        canMoveFreely = true; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
+        yield return new WaitForSeconds(duration); // ï¿½È´ï¿½Ö¸ï¿½ï¿½Ê±ï¿½ï¿½
+        rb2d.gravityScale = 1; // ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½
+        canMoveFreely = false; // ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
     }
     IEnumerator Immobilize(float time, GameObject other)
     {
         isImmobilized = true;
         rb2d.velocity = Vector2.zero;
+         Debug.Log("Immobilize"+rb2d.velocity);
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(time);
         isImmobilized = false;
@@ -263,15 +280,15 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator Cooldown()
     {
-        isCooldown = true; // ¿ªÊ¼ÀäÈ´
-        yield return new WaitForSeconds(cooldownTime); // µÈ´ıÀäÈ´Ê±¼ä
-        isCooldown = false; // ½áÊøÀäÈ´
+        isCooldown = true; // ï¿½ï¿½Ê¼ï¿½ï¿½È´
+        yield return new WaitForSeconds(cooldownTime); // ï¿½È´ï¿½ï¿½ï¿½È´Ê±ï¿½ï¿½
+        isCooldown = false; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È´
     }
     void ReloadCurrentScene()
     {
-        Time.timeScale = 1; // ³¡¾°ÔË¶¯
-        int sceneIndex = SceneManager.GetActiveScene().buildIndex; // »ñÈ¡µ±Ç°³¡¾°µÄË÷Òı
-        SceneManager.LoadScene(sceneIndex); // ¸ù¾İË÷ÒıÖØĞÂ¼ÓÔØ³¡¾°
+        Time.timeScale = 1; // ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex; // ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        SceneManager.LoadScene(sceneIndex); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Ø³ï¿½ï¿½ï¿½
         possession = 0;
 
         Vector2 originalGravity = Physics2D.gravity;
@@ -279,8 +296,8 @@ public class PlayerController : MonoBehaviour
     }
     void ReloadNextScene()
     {
-        Time.timeScale = 1; // ³¡¾°ÔË¶¯
-        SceneManager.LoadScene(nextsceneName); // ¼ÓÔØÖ¸¶¨³¡¾°
+        Time.timeScale = 1; // ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½
+        SceneManager.LoadScene(nextsceneName); // ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         possession = 0;
         Vector2 originalGravity = Physics2D.gravity;
         Physics2D.gravity = new Vector2(0, -9.81f);
