@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public float immobilizeTime; // 球体不能移动的时间
     private SpriteRenderer spriteRenderer;
     private bool isImmobilized = false;
+    private bool isJump = true;
 
     private Color originalColor;
 
@@ -90,7 +91,7 @@ public class PlayerController : MonoBehaviour
         if (!isImmobilized) // 如果没有被定住
         {
             Move();
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && isJump)
             {
                 Jump();
             }
@@ -189,8 +190,10 @@ public class PlayerController : MonoBehaviour
     }
     void Jump()
     {
+        isJump = true;
         Vector2 v = new Vector2(Physics2D.gravity.x, -Physics2D.gravity.y/9.8f);
         rb2d.AddForce(v * jumpForce, ForceMode2D.Impulse);
+
     }
     void Move()
     {
@@ -208,6 +211,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             isGrounded = true; // 接触地面时更新地面状态
+            isJump = true;
         }
         if (other.gameObject.CompareTag("Goal")) // 检测是否碰撞到Goal
         {
@@ -215,6 +219,11 @@ public class PlayerController : MonoBehaviour
             Time.timeScale = 0; // 静止场景
             success.SetActive(true); 
             nextlevel.SetActive(true); 
+        }
+
+        if (other.gameObject.tag == "SpringBed") // Do not jump when player using spring bed tool
+        {
+            isJump = false;
         }
 
     }
@@ -285,4 +294,5 @@ public class PlayerController : MonoBehaviour
         Vector2 originalGravity = Physics2D.gravity;
         Physics2D.gravity = new Vector2(0, -9.81f);
     }
+    
 }
