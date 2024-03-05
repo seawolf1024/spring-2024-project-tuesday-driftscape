@@ -1,20 +1,38 @@
 using UnityEngine;
-using UnityEngine.Analytics;
-using System.Collections.Generic;
+using System.Collections;
+using Proyecto26;
+using UnityEngine.Networking;
+using System;
 
 public class LevelCompleteAnalytics : MonoBehaviour
 {
     public void SendLevelCompleteEvent(string levelName, bool success, float timeElapsed)
     {
-        Dictionary<string, object> eventData = new Dictionary<string, object>
-        {
-            { "level_name", levelName },
-            { "success", success },
-            { "time_elapsed", timeElapsed }
-        };
-
-        // 发送自定义事件
-        AnalyticsResult result = Analytics.CustomEvent("level_complete", eventData);
-
+        Debug.Log(levelName);
+        Debug.Log(success);
+        Debug.Log(timeElapsed);
+        StartCoroutine(SendLevelCompleteEventCoroutine(levelName, success, timeElapsed));
     }
+
+    private IEnumerator SendLevelCompleteEventCoroutine(string levelName, bool success, float timeElapsed)
+    {
+        Debug.Log(levelName);
+        Debug.Log(success);
+        Debug.Log(timeElapsed);
+        PlayerData player = new PlayerData();
+        player.levelName = levelName;
+        player.success = success;
+        player.timeElapsed = timeElapsed;
+        string json = JsonUtility.ToJson(player);
+
+        yield return RestClient.Post("https://driftspace-default-rtdb.firebaseio.com/.json", json);
+    }
+}
+
+[System.Serializable]
+public class PlayerData
+{
+    public string levelName;
+    public bool success;
+    public float timeElapsed;
 }
