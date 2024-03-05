@@ -809,8 +809,8 @@ MonoBehaviour:
   jumpForce: 6
   speed: 3
   jumpKey: 32
-  textspeed: 0.2
-  hintransform: {fileID: 0}
+  textspeed: 5
+  hintransform: {fileID: 917017031}
   isHint: 0
   hintgtransform: {fileID: 557281361}
   isHintg: 0
@@ -996,7 +996,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.66, y: -3.92}
+  m_AnchoredPosition: {x: -10.249999, y: -3.92}
   m_SizeDelta: {x: 21.5829, y: 8.7083}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &557281362
@@ -1695,7 +1695,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.86, y: -3.77}
+  m_AnchoredPosition: {x: -11.049999, y: -3.77}
   m_SizeDelta: {x: 21.5829, y: 8.7083}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &917017032
@@ -3358,7 +3358,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.01, y: -3.87}
+  m_AnchoredPosition: {x: -10.9, y: -3.87}
   m_SizeDelta: {x: 21.5829, y: 8.7083}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1982936623

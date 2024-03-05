@@ -1341,7 +1341,7 @@ MonoBehaviour:
   isHint: 0
   hintgtransform: {fileID: 1793593283}
   isHintg: 0
-  hintftransform: {fileID: 0}
+  hintftransform: {fileID: 1285593962}
   isHintf: 0
   immobilizeTime: 2
   enemy: {fileID: 2080061477}
