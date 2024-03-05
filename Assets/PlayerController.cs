@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public float speed; // 控制角色移动速度
     public KeyCode jumpKey = KeyCode.Space; // 跳跃按键，默认为空格键
     private Rigidbody2D rb2d;
-
+    private LevelCompleteAnalytics analytic;
     public float textspeed = 0.8f;
     public RectTransform hintransform;
     private Vector2 hintstartPosition;
@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();     
         spriteRenderer = GetComponent<SpriteRenderer>(); // 获取SpriteRenderer组件
+        analytic = GetComponent<LevelCompleteAnalytics>();
         originalColor = spriteRenderer.color; // 保存原始颜色
         success.SetActive(false);
         restart.SetActive(false);
@@ -82,7 +83,6 @@ public class PlayerController : MonoBehaviour
         pauseMenuUI.SetActive(false);
         hintstartPosition = hintransform.anchoredPosition;
         hintgstartPosition = hintgtransform.anchoredPosition;
-        timestart = new Time();
 
     }
 
@@ -108,11 +108,11 @@ public class PlayerController : MonoBehaviour
             if(isHint){
                 isHint = false;
                 // move hint to the right
-                hintransform.anchoredPosition = hintstartPosition;
+                hintransform.anchoredPosition = hintstartPosition-Vector2.right*hintransform.rect.width;
             }
             if(isHintf){
                 isHintf = false;
-                hintftransform.anchoredPosition = hintfstartPosition;
+                hintftransform.anchoredPosition = hintfstartPosition-Vector2.right*hintftransform.rect.width;
             }
             hintgtransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
             if (hintgtransform.anchoredPosition.x > Screen.width + hintgtransform.rect.width)
@@ -124,11 +124,11 @@ public class PlayerController : MonoBehaviour
         {
             if (isHintg){
                 isHintg = false;
-                hintgtransform.anchoredPosition = hintgstartPosition;
+                hintgtransform.anchoredPosition = hintgstartPosition-Vector2.right*hintgtransform.rect.width;
             }
             if(isHintf){
                 isHintf = false;
-                hintftransform.anchoredPosition = hintfstartPosition;
+                hintftransform.anchoredPosition = hintfstartPosition-Vector2.right*hintftransform.rect.width;
             }
             hintransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
             if (hintransform.anchoredPosition.x > Screen.width + hintransform.rect.width)
@@ -139,11 +139,11 @@ public class PlayerController : MonoBehaviour
         if(isHintf){
             if(isHint){
                 isHint = false;
-                hintransform.anchoredPosition = hintstartPosition;
+                hintransform.anchoredPosition = hintstartPosition-Vector2.right*hintransform.rect.width;
             }
             if(isHintg){
                 isHintg = false;
-                hintgtransform.anchoredPosition = hintgstartPosition;
+                hintgtransform.anchoredPosition = hintgstartPosition-Vector2.right*hintgtransform.rect.width;
             }
             hintftransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
             if (hintftransform.anchoredPosition.x > Screen.width + hintftransform.rect.width)
@@ -258,8 +258,8 @@ public class PlayerController : MonoBehaviour
         // 如果重启的UI显示，并且玩家按下了O键，则重新加载当前场景
         if (nextlevel.activeSelf && Input.GetKeyDown(KeyCode.O))
         {
-            float timeElapsed = Time.time - timestart.time;
-            GetComponent<LevelCompleteAnalytics>().SendLevelCompleteEvent(SceneManager.GetActiveScene().name, true, timeElapsed);
+            float timeElapsed = Time.time;
+            analytic.SendLevelCompleteEvent(SceneManager.GetActiveScene().name, true, timeElapsed);
             ReloadNextScene();
         }
         // Check if the ESC key is pressed
@@ -374,7 +374,6 @@ public class PlayerController : MonoBehaviour
     {
         isImmobilized = true;
         rb2d.velocity = Vector2.zero;
-         Debug.Log("Immobilize"+rb2d.velocity);
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(time);
         isImmobilized = false;
