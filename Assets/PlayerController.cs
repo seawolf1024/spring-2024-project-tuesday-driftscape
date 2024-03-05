@@ -104,6 +104,14 @@ public class PlayerController : MonoBehaviour
                 isHintg = false;
             }
         }
+        if (isHint)
+        {
+            hintransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
+            if (hintransform.anchoredPosition.x > Screen.width + hintransform.rect.width)
+            {
+                isHint = false;
+            }
+        }
         if (canMoveFreely)
         {
             // 失去重力时的自由移动
@@ -142,12 +150,12 @@ public class PlayerController : MonoBehaviour
 
                 if (currentAngleDegrees >= 180f)
                 {
-                    isRotatingClockwise = true; // 超过180度，改为逆时针旋转
+                    isRotatingClockwise = true; // 超过180度
                     currentAngleDegrees = 180f; // 修正角度到边界
                 }
                 else if (currentAngleDegrees <= 0f)
                 {
-                    isRotatingClockwise = false; // 小于0度，改为顺时针旋转
+                    isRotatingClockwise = false; // 小于0度
                     currentAngleDegrees = 0f; // 修正角度到边界
                 }
 
@@ -304,15 +312,6 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Tool"))
         {
-            /*isHint = true;
-            if (isHint)
-            {
-                hintransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
-                if (hintransform.anchoredPosition.x > Screen.width + hintransform.rect.width)
-                {
-                    isHint = false;
-                }
-            }*/
             StartCoroutine(TemporaryLoseGravity(FreeFlytime));
         }
     }
@@ -320,6 +319,7 @@ public class PlayerController : MonoBehaviour
     {
         rb2d.gravityScale = 0; // 玩家失去重力
         canMoveFreely = true; // 允许玩家自由移动
+        isHint = true;
         yield return new WaitForSeconds(duration); // 等待指定时间
         rb2d.gravityScale = 1; // 恢复重力
         canMoveFreely = false; // 恢复正常移动限制
