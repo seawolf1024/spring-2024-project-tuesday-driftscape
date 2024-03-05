@@ -3379,6 +3379,8 @@ GameObject:
   - component: {fileID: 1846410372}
   - component: {fileID: 1846410371}
   - component: {fileID: 1846410370}
+  - component: {fileID: 1846410375}
+  - component: {fileID: 1846410376}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3559,6 +3561,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 184411732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1846410375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846410369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1884ef8b467a244b049c03298c7564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1846410376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846410369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1884ef8b467a244b049c03298c7564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1957311334
 GameObject:
   m_ObjectHideFlags: 0
@@ -3705,6 +3731,7 @@ GameObject:
   - component: {fileID: 2029431591}
   - component: {fileID: 2029431590}
   - component: {fileID: 2029431589}
+  - component: {fileID: 2029431593}
   m_Layer: 0
   m_Name: Goal
   m_TagString: Goal
@@ -3841,6 +3868,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 184411732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2029431593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029431588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1884ef8b467a244b049c03298c7564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2042982647
 GameObject:
   m_ObjectHideFlags: 0
@@ -3852,6 +3891,7 @@ GameObject:
   - component: {fileID: 2042982648}
   - component: {fileID: 2042982650}
   - component: {fileID: 2042982649}
+  - component: {fileID: 2042982651}
   m_Layer: 5
   m_Name: LevelInfo
   m_TagString: Untagged
@@ -3975,6 +4015,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2042982647}
   m_CullTransparentMesh: 1
+--- !u!114 &2042982651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042982647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1884ef8b467a244b049c03298c7564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2128800066
 GameObject:
   m_ObjectHideFlags: 0
