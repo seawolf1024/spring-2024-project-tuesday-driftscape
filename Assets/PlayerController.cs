@@ -69,6 +69,8 @@ public class PlayerController : MonoBehaviour
     private bool isPaused = false; 
     public GameObject pauseMenuUI;
 
+    public Time timestart;
+
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();     
@@ -80,7 +82,7 @@ public class PlayerController : MonoBehaviour
         pauseMenuUI.SetActive(false);
         hintstartPosition = hintransform.anchoredPosition;
         hintgstartPosition = hintgtransform.anchoredPosition;
-
+        timestart = new Time();
 
     }
 
@@ -256,6 +258,8 @@ public class PlayerController : MonoBehaviour
         // 如果重启的UI显示，并且玩家按下了O键，则重新加载当前场景
         if (nextlevel.activeSelf && Input.GetKeyDown(KeyCode.O))
         {
+            float timeElapsed = Time.time - timestart.time;
+            GetComponent<LevelCompleteAnalytics>().SendLevelCompleteEvent(SceneManager.GetActiveScene().name, true, timeElapsed);
             ReloadNextScene();
         }
         // Check if the ESC key is pressed
