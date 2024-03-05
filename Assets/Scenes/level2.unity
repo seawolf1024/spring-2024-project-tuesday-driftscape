@@ -367,7 +367,7 @@ MonoBehaviour:
   jumpForce: 6
   speed: 3
   jumpKey: 32
-  textspeed: 5
+  textspeed: 2
   hintransform: {fileID: 599574251}
   isHint: 0
   hintgtransform: {fileID: 556028928}

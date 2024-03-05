@@ -156,7 +156,6 @@ public class PlayerController : MonoBehaviour
         {
             // 失去重力时的自由移动
             Vector2 movement = new Vector2(moveHorizontal, moveVertical) * speed;
-            Debug.Log("movement"+rb2d.velocity);
             rb2d.velocity = movement;
         }
         if (enemy != null && !isImmobilized)
@@ -218,15 +217,21 @@ public class PlayerController : MonoBehaviour
             if (Vector2.Distance(fbuild.position, transform.position) < 0.5f)
             {
                 haveftool = true;
+                Debug.Log("Fake "+ isHintf);
+                if (!isHintf) {
+                    hintftransform.anchoredPosition += (hintftransform.rect.width / 2) * Vector2.right;
+                }
                 isHintf = true;
-                hintftransform.anchoredPosition += (hintftransform.rect.width/2)*Vector2.right;
                 fgoal.SetActive(false);
             }
             if (Vector2.Distance(gravityTool.position, transform.position) < 0.5f)
             {
                 possession += 1;
+                Debug.Log("Gravity "+ isHintg);
+                if (!isHintg) {
+                    hintgtransform.anchoredPosition += (hintgtransform.rect.width / 2) * Vector2.right;
+                }
                 isHintg = true;
-                hintgtransform.anchoredPosition += (hintgtransform.rect.width/2)*Vector2.right;
                 gtool.SetActive(false);
 
             }
@@ -266,6 +271,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Time.timeScale = 1; // 场景运动
+            Physics2D.gravity = new Vector2(0, -9.81f);
             SceneManager.LoadScene("Home");
         }
     }
@@ -280,12 +286,9 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator FakeGoal(float duration)
     {
-        Debug.Log("fuse");
         navi.agent.SetDestination(fbuild.position);
-        Debug.Log(navi.agent.destination);
         yield return new WaitForSeconds(duration);
         navi.getconfused = false;
-        Debug.Log(navi.agent.destination);
     }
     void Gupside()
     {
@@ -333,6 +336,15 @@ public class PlayerController : MonoBehaviour
             isJump = false;
         }
 
+    }
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        // Continuously check for collision with the ground
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+            isJump = true;
+        }
     }
     void OnCollisionExit2D(Collision2D other)
     {
