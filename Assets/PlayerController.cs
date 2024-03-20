@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         // 自由移动时，允许上下移动
         float moveVertical = canMoveFreely ? Input.GetAxis("Vertical") : 0;
-        if (Input.GetMouseButtonDown(1)) // 鼠标右键的索引是1
+        if (Input.GetKeyDown(KeyCode.Escape)) // 鼠标右键的索引是1
         {
             TogglePause();
         }

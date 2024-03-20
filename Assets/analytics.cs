@@ -35,4 +35,7 @@ public class PlayerData
     public string levelName;
     public bool success;
     public float timeElapsed;
+    public float locationX = 0;
+    public float locationY = 0;
+
 }
