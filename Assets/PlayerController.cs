@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         // 自由移动时，允许上下移动
         float moveVertical = canMoveFreely ? Input.GetAxis("Vertical") : 0;
-        if (Input.GetKeyDown(KeyCode.Escape)) // 鼠标右键的索引是1
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePause();
         }
@@ -312,14 +312,14 @@ public class PlayerController : MonoBehaviour
     {
         // 球体发生碰撞，允许移动，发射逻辑
         canMove = true;
-        if (other.gameObject.CompareTag("Trap") && !isCooldown) // 锟斤拷锟斤拷欠锟斤拷锟阶诧拷锟絫rap锟截帮拷
+        if (other.gameObject.CompareTag("Trap") && !isCooldown) // 如果碰撞到陷阱并且不在冷却状态
         {
             StartCoroutine(Immobilize(immobilizeTime, other.gameObject));
             StartCoroutine(Cooldown());
         }
         if (other.gameObject.CompareTag("Ground"))
         {
-
+            Debug.Log("Enter ground");
             isGrounded = true; // 接触地面时更新地面状态
             isJump = true;
 
@@ -343,6 +343,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+            Debug.Log("Stay ground");
             isJump = true;
         }
     }
@@ -351,6 +352,8 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             isGrounded = false; // 离开地面时更新地面状态
+            Debug.Log("Exit ground");
+            Debug.Log(isGrounded);
         }
         if (other.gameObject.CompareTag("Goal")) // 检测是否碰撞到Goal
         {
