@@ -261,7 +261,7 @@ public class PlayerController : MonoBehaviour
             ReloadCurrentScene();
         }
         // 如果重启的UI显示，并且玩家按下了O键，则重新加载当前场景
-        if (nextlevel.activeSelf && Input.GetKeyDown(KeyCode.O))
+        if (nextlevel.activeSelf && Input.GetKeyDown(KeyCode.Return))
         {
             float timeElapsed = Time.time;
             analytic.SendLevelCompleteEvent(SceneManager.GetActiveScene().name, true, timeElapsed);
