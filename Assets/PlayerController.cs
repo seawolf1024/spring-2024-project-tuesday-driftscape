@@ -53,8 +53,8 @@ public class PlayerController : MonoBehaviour
     public bool isCooldown = false; // 陷阱是否处于冷却状态
     public float cooldownTime = 0.6f; // 陷阱的冷却时间
 
-    private bool isPaused = false; 
-    public GameObject pauseMenuUI;
+    // private bool isPaused = false; 
+    // public GameObject pauseMenuUI;
 
     public Time timestart;
 
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
         success.SetActive(false);
         restart.SetActive(false);
         nextlevel.SetActive(false);
-        pauseMenuUI.SetActive(false);
+        // pauseMenuUI.SetActive(false);
 
     }
 
@@ -85,10 +85,10 @@ public class PlayerController : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
         // 自由移动时，允许上下移动
         float moveVertical = canMoveFreely ? Input.GetAxis("Vertical") : 0;
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            TogglePause();
-        }
+        // if (Input.GetKeyDown(KeyCode.Escape))
+        // {
+        //     TogglePause();
+        // }
 
         if (canMoveFreely)
         {
@@ -341,20 +341,20 @@ public class PlayerController : MonoBehaviour
         Vector2 originalGravity = Physics2D.gravity;
         Physics2D.gravity = new Vector2(0, -9.81f);
     }
-    void TogglePause()
-    {
-        isPaused = !isPaused;
+    // void TogglePause()
+    // {
+    //     isPaused = !isPaused;
 
-        Time.timeScale = isPaused ? 0 : 1;
+    //     Time.timeScale = isPaused ? 0 : 1;
 
-        if (isPaused)
-        {
-            pauseMenuUI.SetActive(true);
-        }
-        else
-        {
-            pauseMenuUI.SetActive(false);
-        }
-    }
+    //     if (isPaused)
+    //     {
+    //         pauseMenuUI.SetActive(true);
+    //     }
+    //     else
+    //     {
+    //         pauseMenuUI.SetActive(false);
+    //     }
+    // }
 
 }
