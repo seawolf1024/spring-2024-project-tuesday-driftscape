@@ -10,19 +10,6 @@ public class PlayerController : MonoBehaviour
     public KeyCode jumpKey = KeyCode.Space; // 跳跃按键，默认为空格键
     private Rigidbody2D rb2d;
     private LevelCompleteAnalytics analytic;
-    public float textspeed = 0.8f;
-    public RectTransform hintransform;
-    private Vector2 hintstartPosition;
-    public bool isHint = false;
-    public RectTransform hintgtransform;
-    private Vector2 hintgstartPosition;
-    public bool isHintg = false;
-
-    public RectTransform hintftransform;
-    private Vector2 hintfstartPosition;
-    public bool isHintf = false;
-
-
 
     private bool isGrounded; // 是否接触地面
     public float immobilizeTime; // 球体不能移动的时间
@@ -81,8 +68,6 @@ public class PlayerController : MonoBehaviour
         restart.SetActive(false);
         nextlevel.SetActive(false);
         pauseMenuUI.SetActive(false);
-        hintstartPosition = hintransform.anchoredPosition;
-        hintgstartPosition = hintgtransform.anchoredPosition;
 
     }
 
@@ -103,53 +88,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePause();
-        }
-        if(isHintg){
-            if(isHint){
-                isHint = false;
-                // move hint to the right
-                hintransform.anchoredPosition = hintstartPosition-Vector2.right*hintransform.rect.width;
-            }
-            if(isHintf){
-                isHintf = false;
-                hintftransform.anchoredPosition = hintfstartPosition-Vector2.right*hintftransform.rect.width;
-            }
-            hintgtransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
-            if (hintgtransform.anchoredPosition.x > Screen.width + hintgtransform.rect.width)
-            {
-                isHintg = false;
-            }
-        }
-        if (isHint)
-        {
-            if (isHintg){
-                isHintg = false;
-                hintgtransform.anchoredPosition = hintgstartPosition-Vector2.right*hintgtransform.rect.width;
-            }
-            if(isHintf){
-                isHintf = false;
-                hintftransform.anchoredPosition = hintfstartPosition-Vector2.right*hintftransform.rect.width;
-            }
-            hintransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
-            if (hintransform.anchoredPosition.x > Screen.width + hintransform.rect.width)
-            {
-                isHint = false;
-            }
-        }
-        if(isHintf){
-            if(isHint){
-                isHint = false;
-                hintransform.anchoredPosition = hintstartPosition-Vector2.right*hintransform.rect.width;
-            }
-            if(isHintg){
-                isHintg = false;
-                hintgtransform.anchoredPosition = hintgstartPosition-Vector2.right*hintgtransform.rect.width;
-            }
-            hintftransform.anchoredPosition += Vector2.right * textspeed * Time.deltaTime;
-            if (hintftransform.anchoredPosition.x > Screen.width + hintftransform.rect.width)
-            {
-                isHintf = false;
-            }
         }
 
         if (canMoveFreely)
@@ -217,21 +155,11 @@ public class PlayerController : MonoBehaviour
             if (Vector2.Distance(fbuild.position, transform.position) < 0.5f)
             {
                 haveftool = true;
-                Debug.Log("Fake "+ isHintf);
-                if (!isHintf) {
-                    hintftransform.anchoredPosition += (hintftransform.rect.width / 2) * Vector2.right;
-                }
-                isHintf = true;
                 fgoal.SetActive(false);
             }
             if (Vector2.Distance(gravityTool.position, transform.position) < 0.5f)
             {
                 possession += 1;
-                Debug.Log("Gravity "+ isHintg);
-                if (!isHintg) {
-                    hintgtransform.anchoredPosition += (hintgtransform.rect.width / 2) * Vector2.right;
-                }
-                isHintg = true;
                 gtool.SetActive(false);
 
             }
@@ -376,8 +304,6 @@ public class PlayerController : MonoBehaviour
     {
         rb2d.gravityScale = 0; // 玩家失去重力
         canMoveFreely = true; // 允许玩家自由移动
-        isHint = true;
-        hintransform.anchoredPosition += hintransform.rect.width/2*Vector2.right;
         yield return new WaitForSeconds(duration); // 等待指定时间
         rb2d.gravityScale = 1; // 恢复重力
         canMoveFreely = false; // 恢复正常移动限制
