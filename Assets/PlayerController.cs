@@ -268,12 +268,12 @@ public class PlayerController : MonoBehaviour
             ReloadNextScene();
         }
         // Check if the ESC key is pressed
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Time.timeScale = 1; // 场景运动
-            Physics2D.gravity = new Vector2(0, -9.81f);
-            SceneManager.LoadScene("Home");
-        }
+        // if (Input.GetKeyDown(KeyCode.Escape))
+        // {
+        //     Time.timeScale = 1; // 场景运动
+        //     Physics2D.gravity = new Vector2(0, -9.81f);
+        //     SceneManager.LoadScene("Home");
+        // }
     }
     void LaunchProjectile()
     {
@@ -343,7 +343,6 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
-            Debug.Log("Stay ground");
             isJump = true;
         }
     }
@@ -352,8 +351,6 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             isGrounded = false; // 离开地面时更新地面状态
-            Debug.Log("Exit ground");
-            Debug.Log(isGrounded);
         }
         if (other.gameObject.CompareTag("Goal")) // 检测是否碰撞到Goal
         {
